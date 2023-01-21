@@ -2,39 +2,18 @@ import character, weapon, parse, sys, argparse
 sys.path.append("./py")
 
 from output import Output
-
-# add json if u want
-parseList = {
-    "AvatarCurveExcelConfigData": Output.AvatarCurveExcelConfig,
-    "AvatarExcelConfigData": Output.AvatarExcelConfig,
-    "AvatarSkillDepotExcelConfigData": Output.AvatarSkillDepotExcelConfig,
-    "AvatarSkillExcelConfigData": Output.AvatarSkillExcelConfig,
-    "FetterInfoExcelConfigData": Output.FetterInfoExcelConfig,
-    "AvatarTalentExcelConfigData": Output.AvatarTalentExcelConfig,
-    "AvatarPromoteExcelConfigData": Output.AvatarPromoteExcelConfig,
-    "ProudSkillExcelConfigData": Output.ProudSkillExcelConfig,
-    "MaterialExcelConfigData": Output.MaterialExcelConfig,
-    "EquipAffixExcelConfigData": Output.EquipAffixExcelConfig,
-    "WeaponExcelConfigData": Output.WeaponExcelConfig,
-    "WeaponCurveExcelConfigData": Output.WeaponCurveExcelConfig,
-    "WeaponPromoteExcelConfigData": Output.WeaponPromoteExcelConfig,
-    "WeaponLevelExcelConfigData": Output.WeaponLevelExcelConfig,
-}
+from parseList import parseList
 
 def printUsage():
     print("""
 usage: main.py [-t] [-e] [-o] [-l LANG] [-i ID] [-s] [-w]
-
 Arguments:
     -t --textmap        # Dump TextMap (-l argument needed)
     -e --excel          # Dump ExcelBinOutput
     -o --output         # Generate character output (-l, -i argument needed)
-
     -l --lang [LANG]    # Set language (Example: KR)
     -i --id [ID]        # Set character id (Example: 10000078)
-
     -s                  # Xlsx skill short version
-
     -w --weapon         # Generate weapon output (-l, -i argument needed)
     """)
     sys.exit(1)
@@ -69,7 +48,10 @@ if __name__ == "__main__":
     if args.excel:
         for i in parseList.keys():
             print("Parsing " + i)
-            parse.UniversalParse(i, parseList[i])
+            try:
+                parse.UniversalParse(i, parseList[i])
+            except:
+                pass
     
     if args.output:
         if args.lang is not None and args.id is not None:
